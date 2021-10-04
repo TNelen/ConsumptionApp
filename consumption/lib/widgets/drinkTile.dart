@@ -3,6 +3,7 @@
 import 'package:consumption/Constants.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
 import 'package:consumption/models/drink.dart';
+import 'package:consumption/widgets/confirmPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -33,7 +34,7 @@ class DrinkTileState extends State<DrinkTile> {
         borderRadius: BorderRadius.circular(15.0),
         splashColor: Constants.accentColor,
         onTap: () {
-          firestoreService.addDrink(widget.drink);
+          Popup.makeConfirmPopup(context, widget.drink);
         },
         child: Container(
           width: MediaQuery.of(context).size.width - 60,

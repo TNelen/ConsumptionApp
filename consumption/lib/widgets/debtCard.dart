@@ -1,5 +1,6 @@
 // @dart=2.9
 import 'package:consumption/firebase/firestoreService.dart';
+import 'package:consumption/pages/history.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -43,29 +44,37 @@ class DebtCardState extends State<DebtCard> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            child: Container(
-              width: MediaQuery.of(context).size.width - 60,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                child: Column(
-                  children: [
-                    Text(
-                      "Je bent verschuldigd ",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      debt,
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.accentColor),
-                    ),
-                  ],
+            child: InkWell(
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => History()),
+                  );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width - 60,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Je bent verschuldigd ",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w300),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        debt,
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Constants.accentColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

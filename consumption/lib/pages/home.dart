@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                     SizedBox(height: 20),
                     DebtCard(),
                     SizedBox(height: 30),
-                    Text("Registreer een nieuw consumptie...",
+                    Text("Registreer een nieuwe consumptie...",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w300)),
                     SizedBox(height: 20),

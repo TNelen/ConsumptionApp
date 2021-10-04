@@ -27,25 +27,25 @@ class FirestoreService {
   }
 
   //get all consumptions for a user
-  Future<List<Consumption>> getConsumptions() {
+  Future<List<Consumption>> getConsumptions() async {
     var userId = FirebaseAuth.instance.currentUser.uid;
-    List<Consumption> consumptions;
+    List<Consumption> consumptions = new List();
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('consumptions')
         .where('user', isEqualTo: userId)
         .get()
         .then((querySnapshot) => querySnapshot.docs.forEach((element) {
               consumptions.add(Consumption.fromJson(element.data()));
             }));
-
-    print(consumptions);
+    return consumptions;
   }
+  
 
   ///getdebt for a user
   Future<double> getDebt() async {
     var userId = FirebaseAuth.instance.currentUser.uid;
-    double debt=0.0;
+    double debt = 0.0;
 
     print("Getting debt for user: ${userId}");
 
@@ -53,13 +53,10 @@ class FirestoreService {
         .collection('consumptions')
         .where('user', isEqualTo: userId)
         .get()
-        .then(
-          (querySnapshot) =>
-            querySnapshot.docs.forEach((element) {
-                print(element.data()["price"]);
-                debt += element.data()["price"];
-              })
-            );
+        .then((querySnapshot) => querySnapshot.docs.forEach((element) {
+              print(element.data()["price"]);
+              debt += element.data()["price"];
+            }));
 
     print("Debt for user: " + debt.toString());
 

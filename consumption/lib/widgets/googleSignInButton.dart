@@ -1,3 +1,4 @@
+import 'package:consumption/Constants.dart';
 import 'package:consumption/firebase/authService.dart';
 import 'package:consumption/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,10 +20,9 @@ class _GoogleSignInState extends State<GoogleSignIn> {
     Size size = MediaQuery.of(context).size;
     return !isLoading
         ? SizedBox(
-            width: size.width * 0.8,
-            child: OutlinedButton.icon(
-              icon: FaIcon(FontAwesomeIcons.google),
-              onPressed: () async {
+            width: size.width,
+            child: InkWell(
+              onTap: () async {
                 setState(() {
                   isLoading = true;
                 });
@@ -45,17 +45,25 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   isLoading = false;
                 });
               },
-              label: Text(
-                "Log in met Google",
-                style: TextStyle(
-                    color: Colors.black45, fontWeight: FontWeight.bold),
+              child: Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Constants.secondColor,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Log in",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Constants.accentColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
               ),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.grey),
-                  side: MaterialStateProperty.all<BorderSide>(BorderSide.none)),
-            ),
-          )
+            ))
         : CircularProgressIndicator();
   }
 

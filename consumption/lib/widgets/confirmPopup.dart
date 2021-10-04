@@ -42,7 +42,7 @@ class Popup {
                 "Annuleer",
                 style: TextStyle(
                     fontFamily: "roboto",
-                    color: Colors.grey,
+                    color: Colors.grey.shade400,
                     fontSize: 17,
                     fontWeight: FontWeight.w300),
               ),

@@ -67,7 +67,7 @@ class _HistoryState extends State<History> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Jou consumpties",
+                    Text("Jouw consumpties",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w300)),
                     SizedBox(
@@ -78,14 +78,14 @@ class _HistoryState extends State<History> {
                             height: 500,
                             width: 500,
                             child: Center(
-                              child: Text("Loading..."),
+                              child: Text("Laden..."),
                             ))
                         : consumptions.length == 0
                             ? Container(
                                 height: 500,
                                 width: 500,
                                 child: Center(
-                                  child: Text("No consumptions yet..."),
+                                  child: Text("Nog geen consumpties..."),
                                 ))
                             : Container(
                                 height: 500,

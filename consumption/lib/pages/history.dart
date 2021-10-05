@@ -30,11 +30,13 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List<Consumption>>(
-            future: firestoreService.getConsumptions(), // async work
+        body: FutureBuilder<Map<String, Object>>(
+            future: firestoreService.getUserData(), // async work
             builder: (BuildContext context,
-                AsyncSnapshot<List<Consumption>> snapshot) {
+                AsyncSnapshot<Map<String, Object>> snapshot) {
               List<Consumption> consumptions;
+              double debt;
+
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   consumptions = null;
@@ -42,9 +44,12 @@ class _HistoryState extends State<History> {
                 default:
                   if (snapshot.hasError) {
                     consumptions = [];
+                    debt = null;
                     break;
                   } else {
-                    consumptions = snapshot.data;
+                    consumptions = snapshot.data["consumptions"];
+                    debt = snapshot.data["debt"];
+
                     break;
                   }
               }
@@ -67,9 +72,45 @@ class _HistoryState extends State<History> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Jouw consumpties",
+                    Text("Historiek",
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w300)),
+                            fontSize: 40, fontWeight: FontWeight.w300)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Openstaande schuld: ",
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w300)),
+                        Text(debt.toStringAsFixed(2) + " €",
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w300)),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Constants.secondColor,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Vereffen schuld",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Constants.accentColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+              
                     SizedBox(
                       height: 20,
                     ),

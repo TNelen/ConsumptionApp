@@ -7,7 +7,7 @@ import 'package:consumption/pages/home.dart';
 import 'package:flutter/material.dart';
 
 class Popup {
-  static void makeConfirmPopup(
+  static void makeDrinkConfirmPopup(
     BuildContext context,
     Drink drink,
   ) {
@@ -42,7 +42,7 @@ class Popup {
                 "Annuleer",
                 style: TextStyle(
                     fontFamily: "roboto",
-                    color: Colors.grey.shade400,
+                    color: Colors.grey.shade600,
                     fontSize: 17,
                     fontWeight: FontWeight.w300),
               ),

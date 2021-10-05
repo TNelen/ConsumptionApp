@@ -34,7 +34,7 @@ class DrinkTileState extends State<DrinkTile> {
         borderRadius: BorderRadius.circular(15.0),
         splashColor: Constants.accentColor,
         onTap: () {
-          Popup.makeConfirmPopup(context, widget.drink);
+          Popup.makeDrinkConfirmPopup(context, widget.drink);
         },
         child: Container(
           width: MediaQuery.of(context).size.width - 60,

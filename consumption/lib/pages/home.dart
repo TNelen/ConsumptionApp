@@ -22,17 +22,12 @@ class _HomeState extends State<Home> {
   User user;
   FirestoreService firestoreService = FirestoreService();
 
-
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
     print(user.displayName);
     super.initState();
   }
-
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +116,11 @@ class _HomeState extends State<Home> {
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
                               Drink drink = Drink(
-                                name: ds['name'].toString(),
-                                price: (ds['price']));
+                                  name: ds['name'].toString(),
+                                  price: (ds['price']));
                               return new DrinkTile(
-                                  drink: drink,
-                                  );
+                                drink: drink,
+                              );
                             }))
                   ]);
           }

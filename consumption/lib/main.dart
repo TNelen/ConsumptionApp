@@ -43,11 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
+              child: Center(child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 50,
+                    height: 200,
                   ),
                   Image.asset(
                     "assets/images/beer.jpg",
@@ -56,10 +56,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                     height: 50,
                   ),
+                  Text(
+                      "Consumptie",
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
+                    ),
+                    Text(
+                      "Tracker",
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
                    GoogleSignIn()
                 ],
               ),
-            );
+            ),);
           }
           return Center(
             child: CircularProgressIndicator(),

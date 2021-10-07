@@ -66,7 +66,7 @@ class Popup {
               ),
               onPressed: () {
                 firestoreService.addDrink(drink);
-               Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Home()),
                 );

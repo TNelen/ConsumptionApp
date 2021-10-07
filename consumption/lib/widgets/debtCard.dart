@@ -26,7 +26,7 @@ class DebtCardState extends State<DebtCard> {
           String debt;
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              debt = 'Loading....';
+              debt = 'Laden....';
               break;
             default:
               if (snapshot.hasError) {

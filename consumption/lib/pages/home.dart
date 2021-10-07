@@ -48,14 +48,14 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   children: [
                     Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
                                 icon: FaIcon(
                                   FontAwesomeIcons.signOutAlt,
-                                  size: 20,
+                                  size: 25,
                                   color: Colors.black54,
                                 ),
                                 onPressed: () async {

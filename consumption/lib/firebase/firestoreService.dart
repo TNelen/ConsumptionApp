@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consumption/models/consumption.dart';
@@ -39,7 +40,8 @@ class FirestoreService {
         .where('user', isEqualTo: userId)
         .get()
         .then((querySnapshot) => querySnapshot.docs.forEach((element) {
-              consumptions.add(Consumption.fromJson(element.data()));
+              consumptions
+                  .add(Consumption.fromJson(element.data(), element.id));
             }));
 
     consumptions = sortList(consumptions);
@@ -69,6 +71,7 @@ class FirestoreService {
     return debt;
   }
 
+  //get data for user. List of all comsumptions and debt
   Future<Map<String, Object>> getUserData() async {
     var userId = FirebaseAuth.instance.currentUser.uid;
     double debt = 0.0;
@@ -84,7 +87,8 @@ class FirestoreService {
               if (!element.data()["settled"]) {
                 debt += element.data()["price"];
               }
-              consumptions.add(Consumption.fromJson(element.data()));
+              consumptions
+                  .add(Consumption.fromJson(element.data(), element.id));
             }));
 
     consumptions = sortList(consumptions);
@@ -94,9 +98,33 @@ class FirestoreService {
     return map;
   }
 
+  //settle all open debts for user
+  // ignore: todo
+  //TODO: investegate if we can do this in a bulk query instead of individual queries?
+  Future<void> settleDebt(List<Consumption> consumptions) async {
+    CollectionReference consumptionsRef =
+        FirebaseFirestore.instance.collection('consumptions');
+
+    print("Settle debt called");
+
+    List<Consumption> openConsumptions = filterOpenConsumptions(consumptions);
+
+    for (Consumption consumption in openConsumptions) {
+      consumptionsRef.doc(consumption.id).update({"settled": true}).onError(
+          (error, stackTrace) =>
+              {print("something went wrong settling consumptions: " + error)});
+    }
+  }
+
   //helper function to sort consumptions on date
   List<Consumption> sortList(List<Consumption> consumptions) {
     consumptions.sort((a, b) => b.date.compareTo(a.date));
+    return consumptions;
+  }
+
+  //helper function to filter list on open consumptions (consumptions that still need to be paid)
+  List<Consumption> filterOpenConsumptions(List<Consumption> consumptions) {
+    consumptions.removeWhere((item) => item.settled);
     return consumptions;
   }
 }

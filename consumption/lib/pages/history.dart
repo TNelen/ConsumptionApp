@@ -12,6 +12,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'home.dart';
+
 class History extends StatefulWidget {
   History({Key key}) : super(key: key);
 
@@ -40,6 +42,7 @@ class _HistoryState extends State<History> {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   consumptions = null;
+                  debt = 0.0;
                   break;
                 default:
                   if (snapshot.hasError) {
@@ -56,7 +59,7 @@ class _HistoryState extends State<History> {
 
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Column(
+                child: ListView(
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
@@ -65,61 +68,78 @@ class _HistoryState extends State<History> {
                         iconSize: 20,
                         icon: FaIcon(FontAwesomeIcons.arrowLeft),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home()),
+                          );
                         },
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Historiek",
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.w300)),
+                    Text(
+                      "Historiek",
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(
                       height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Openstaande schuld: ",
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w300)),
-                        Text(debt.toStringAsFixed(2) + " €",
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w300)),
+                        snapshot.connectionState == ConnectionState.waiting
+                            ? SizedBox()
+                            : Text("Openstaande schuld: ",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w300)),
+                        snapshot.connectionState == ConnectionState.waiting
+                            ? Text("Laden...",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w300))
+                            : Text(debt.toStringAsFixed(2) + " €",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w300)),
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                color: Constants.secondColor,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    "Vereffen schuld",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Constants.accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      color: Constants.secondColor,
+                      child: InkWell(
+                        onTap: () async {
+                          await firestoreService.settleDebt(consumptions);
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "Vereffen schuld",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Constants.accentColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    consumptions == null
+                    snapshot.connectionState == ConnectionState.waiting
                         ? Container(
                             height: 500,
                             width: 500,
                             child: Center(
-                              child: Text("Laden..."),
+                              child: Text("laden..."),
                             ))
                         : consumptions.length == 0
                             ? Container(
@@ -132,6 +152,7 @@ class _HistoryState extends State<History> {
                                 height: 500,
                                 width: 500,
                                 child: ListView.builder(
+                                    shrinkWrap: true,
                                     itemCount: consumptions.length,
                                     itemBuilder: (context, index) {
                                       Consumption consumption =

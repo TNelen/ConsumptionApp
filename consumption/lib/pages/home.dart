@@ -3,6 +3,7 @@ import 'package:consumption/firebase/AuthService.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
 import 'package:consumption/main.dart';
 import 'package:consumption/models/drink.dart';
+import 'package:consumption/pages/stats.dart';
 import 'package:consumption/widgets/debtCard.dart';
 import 'package:consumption/widgets/drinkTile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -97,31 +98,55 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(height: 20),
                     DebtCard(),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     Text("Registreer een nieuwe consumptie...",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w300)),
                     SizedBox(height: 20),
-                    Container(
-                        height: 500,
-                        width: 500,
-                        child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    childAspectRatio: 3 / 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10),
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot ds = snapshot.data.docs[index];
-                              Drink drink = Drink(
-                                  name: ds['name'].toString(),
-                                  price: (ds['price']));
-                              return new DrinkTile(
-                                drink: drink,
-                              );
-                            }))
+                    GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 4 / 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot ds = snapshot.data.docs[index];
+                          Drink drink = Drink(
+                              name: ds['name'].toString(),
+                              price: (ds['price']));
+                          return new DrinkTile(
+                            drink: drink,
+                          );
+                        }),
+                    SizedBox(height: 15),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Stats()),
+                        );
+                      },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Statistieken",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.bar_chart,
+                              size: 25,
+                              color: Colors.black54,
+                            ),
+                          ]),
+                    ),
+                    SizedBox(height: 15),
                   ]);
           }
         },

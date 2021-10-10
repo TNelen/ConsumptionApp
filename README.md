@@ -1,4 +1,4 @@
-# consumption
+# Consumption
 
 Consumption tracker app
 

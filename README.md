@@ -21,10 +21,10 @@ Please ask Timo Nelen to be added to the firebase project
 ### Deploying the app
 > This is only possible if you have access to the firebase
 
-1. Install firebase CLI 
+#### Install firebase CLI 
     npm install -g firebase-tools
 
-2. Deploying to firebase hosting
+#### Deploying to firebase hosting
     firebase deploy
 
 

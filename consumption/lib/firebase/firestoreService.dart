@@ -116,6 +116,8 @@ class FirestoreService {
     }
   }
 
+  
+
   //helper function to sort consumptions on date
   List<Consumption> sortList(List<Consumption> consumptions) {
     consumptions.sort((a, b) => b.date.compareTo(a.date));

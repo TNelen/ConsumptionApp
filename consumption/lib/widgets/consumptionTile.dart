@@ -3,9 +3,7 @@
 import 'package:consumption/Constants.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
 import 'package:consumption/models/consumption.dart';
-import 'package:consumption/models/drink.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ConsumptionTile extends StatefulWidget {

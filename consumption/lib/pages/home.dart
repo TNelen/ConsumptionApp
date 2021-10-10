@@ -9,6 +9,7 @@ import 'package:consumption/widgets/drinkTile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:delayed_display/delayed_display.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
     user = FirebaseAuth.instance.currentUser;
     print(user.displayName);
     super.initState();
+
   }
 
   @override
@@ -91,13 +93,17 @@ class _HomeState extends State<Home> {
                           width: 15,
                         ),
                         Image.asset(
-                          "assets/images/wave-hand.png",
-                          scale: 25,
-                        ),
+                            "assets/images/wave-hand.png",
+                            scale: 25,
+                          ),
+                        
                       ],
                     ),
                     SizedBox(height: 20),
-                    DebtCard(),
+                    DelayedDisplay(
+                      delay: Duration(milliseconds: 200),
+                      child: DebtCard(),
+                    ),
                     SizedBox(height: 20),
                     Text("Registreer een nieuwe consumptie...",
                         style: TextStyle(

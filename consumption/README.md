@@ -1,16 +1,31 @@
 # consumption
 
-A new Flutter project.
+Consumption tracker app
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Install the necessary dependencies
+    flutter pub get
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### run the application locally
+    flutter run -d chrome --web-port=7357
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This forces the application to be ran on with Chrome brower, and on web port 7357;
+This url (http://localhost:7357) is set as a whitelisted Javascript origin domain for Google Authentication API
+
+
+### Database configuration
+Please ask Timo Nelen to be added to the firebase project
+
+### Deploying the app
+> This is only possible if you have access to the firebase
+
+1. Install firebase CLI 
+    npm install -g firebase-tools
+
+2. Deploying to firebase hosting
+    firebase deploy
+
+
+All the deployment configuration is preconfigured in the firebase.json file.

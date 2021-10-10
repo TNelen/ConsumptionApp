@@ -1,6 +1,7 @@
 import 'package:consumption/widgets/googleSignInButton.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:delayed_display/delayed_display.dart';
 
 void main() async {
   runApp(MyApp());
@@ -70,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 50,
                     ),
-                   GoogleSignIn()
+                   DelayedDisplay(
+                  delay: Duration(milliseconds: 200),
+                  child: GoogleSignIn())
                 ],
               ),
             ),);

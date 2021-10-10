@@ -1,14 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consumption/Constants.dart';
-import 'package:consumption/firebase/AuthService.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
-import 'package:consumption/main.dart';
 import 'package:consumption/models/consumption.dart';
-import 'package:consumption/models/drink.dart';
 import 'package:consumption/widgets/consumptionTile.dart';
-import 'package:consumption/widgets/debtCard.dart';
-import 'package:consumption/widgets/drinkTile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -85,82 +78,21 @@ class _StatsState extends State<Stats> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 80,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        snapshot.connectionState == ConnectionState.waiting
-                            ? SizedBox()
-                            : Text("Openstaande schuld: ",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w300)),
-                        snapshot.connectionState == ConnectionState.waiting
-                            ? Text("Laden...",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w300))
-                            : Text(debt.toStringAsFixed(2) + " €",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w300)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      color: Constants.secondColor,
-                      child: InkWell(
-                        onTap: () async {
-                          await firestoreService.settleDebt(consumptions);
-                          setState(() {});
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Vereffen schuld",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Constants.accentColor,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    snapshot.connectionState == ConnectionState.waiting
-                        ? Container(
-                            height: 500,
-                            width: 500,
-                            child: Center(
-                              child: Text("laden..."),
-                            ))
-                        : consumptions.length == 0
-                            ? Container(
-                                height: 500,
-                                width: 500,
-                                child: Center(
-                                  child: Text("Nog geen consumpties..."),
-                                ))
-                            : Container(
-                                height: 500,
-                                width: 500,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: consumptions.length,
-                                    itemBuilder: (context, index) {
-                                      Consumption consumption =
-                                          consumptions[index];
 
-                                      return new ConsumptionTile(
-                                          consumption: consumption);
-                                    }))
+                     Text(
+                      "Work in progress",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Kom snel terug om het resultaat te zien",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               );

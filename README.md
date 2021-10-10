@@ -8,7 +8,7 @@ Consumption tracker app
     flutter pub get
 
 
-### run the application locally
+### Run the application locally
     flutter run -d chrome --web-port=7357
 
 This forces the application to be ran on with Chrome brower, and on web port 7357;

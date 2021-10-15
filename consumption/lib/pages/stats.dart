@@ -1,7 +1,10 @@
 import 'package:consumption/Constants.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
+import 'package:consumption/firebase/helpers.dart';
 import 'package:consumption/models/consumption.dart';
 import 'package:consumption/widgets/consumptionTile.dart';
+import 'package:consumption/widgets/indicator.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -29,23 +32,20 @@ class _StatsState extends State<Stats> {
             future: firestoreService.getUserData(), // async work
             builder: (BuildContext context,
                 AsyncSnapshot<Map<String, Object>> snapshot) {
-              List<Consumption> consumptions;
-              double debt;
-
+              Map<String, int> categoryHistory;
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  consumptions = null;
-                  debt = 0.0;
+                  categoryHistory = null;
                   break;
                 default:
                   if (snapshot.hasError) {
-                    consumptions = [];
-                    debt = null;
+                    categoryHistory = null;
                     break;
                   } else {
-                    consumptions = snapshot.data["consumptions"];
-                    debt = snapshot.data["debt"];
-
+                    snapshot.data["consumptions"] != null
+                        ? categoryHistory =
+                            groupCategory(snapshot.data["consumptions"])
+                        : categoryHistory = null;
                     break;
                   }
               }
@@ -80,8 +80,7 @@ class _StatsState extends State<Stats> {
                     SizedBox(
                       height: 80,
                     ),
-
-                     Text(
+                    Text(
                       "Work in progress",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
@@ -93,6 +92,26 @@ class _StatsState extends State<Stats> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
                       textAlign: TextAlign.center,
                     ),
+                    categoryHistory != null
+                        ? Container(
+                            width: 500,
+                            height: 500,
+                            child: AspectRatio(
+                                aspectRatio: 1,
+                                child: PieChart(PieChartData(
+                                    borderData: FlBorderData(
+                                      show: false,
+                                    ),
+                                    sectionsSpace: 100,
+                                    centerSpaceRadius: 60,
+                                    sections: categoryHistory.entries
+                                        .map((e) => PieChartSectionData(
+                                              title: e.key,
+                                              value: e.value.toDouble(),
+                                              color: (Constants.colors..shuffle()).first
+                                            ))
+                                        .toList()))))
+                        : SizedBox(),
                   ],
                 ),
               );

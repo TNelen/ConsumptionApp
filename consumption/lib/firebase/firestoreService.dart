@@ -6,6 +6,8 @@ import 'package:consumption/models/consumption.dart';
 import 'package:consumption/models/drink.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'helpers.dart';
+
 class FirestoreService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -118,15 +120,5 @@ class FirestoreService {
 
   
 
-  //helper function to sort consumptions on date
-  List<Consumption> sortList(List<Consumption> consumptions) {
-    consumptions.sort((a, b) => b.date.compareTo(a.date));
-    return consumptions;
-  }
-
-  //helper function to filter list on open consumptions (consumptions that still need to be paid)
-  List<Consumption> filterOpenConsumptions(List<Consumption> consumptions) {
-    consumptions.removeWhere((item) => item.settled);
-    return consumptions;
-  }
+ 
 }

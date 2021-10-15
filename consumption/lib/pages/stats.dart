@@ -1,9 +1,8 @@
+import 'dart:math';
+
 import 'package:consumption/Constants.dart';
 import 'package:consumption/firebase/fireStoreService.dart';
 import 'package:consumption/firebase/helpers.dart';
-import 'package:consumption/models/consumption.dart';
-import 'package:consumption/widgets/consumptionTile.dart';
-import 'package:consumption/widgets/indicator.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -72,7 +71,7 @@ class _StatsState extends State<Stats> {
                       height: 20,
                     ),
                     Text(
-                      "Statistieken",
+                      "Mijn statistieken",
                       style:
                           TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
                       textAlign: TextAlign.center,
@@ -92,26 +91,116 @@ class _StatsState extends State<Stats> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
                       textAlign: TextAlign.center,
                     ),
-                    categoryHistory != null
-                        ? Container(
-                            width: 500,
-                            height: 500,
-                            child: AspectRatio(
-                                aspectRatio: 1,
-                                child: PieChart(PieChartData(
-                                    borderData: FlBorderData(
-                                      show: false,
-                                    ),
-                                    sectionsSpace: 100,
-                                    centerSpaceRadius: 60,
-                                    sections: categoryHistory.entries
-                                        .map((e) => PieChartSectionData(
-                                              title: e.key,
-                                              value: e.value.toDouble(),
-                                              color: (Constants.colors..shuffle()).first
-                                            ))
-                                        .toList()))))
-                        : SizedBox(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      height: 260,
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: Constants.tileColor,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 60, top: 30),
+                          child: BarChart(
+                            BarChartData(
+                                barTouchData: BarTouchData(
+                                  enabled: false,
+                                  touchTooltipData: BarTouchTooltipData(
+                                    tooltipBgColor: Colors.transparent,
+                                    tooltipPadding: const EdgeInsets.all(0),
+                                    tooltipMargin: 8,
+                                    getTooltipItem: (
+                                      BarChartGroupData group,
+                                      int groupIndex,
+                                      BarChartRodData rod,
+                                      int rodIndex,
+                                    ) {
+                                      return BarTooltipItem(
+                                        rod.y.round().toString(),
+                                        const TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  bottomTitles: SideTitles(
+                                      rotateAngle: -90,
+                                      showTitles: true,
+                                      getTextStyles: (context, value) =>
+                                          const TextStyle(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                      margin: 10,
+                                      getTitles: (double index) {
+                                        return categoryHistory.keys
+                                            .toList()[index.toInt()];
+                                      }),
+                                  leftTitles: SideTitles(showTitles: false),
+                                  topTitles: SideTitles(showTitles: false),
+                                  rightTitles: SideTitles(showTitles: false),
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                barGroups: categoryHistory.entries
+                                    .map(
+                                      (e) => BarChartGroupData(
+                                        x: categoryHistory.keys
+                                            .toList()
+                                            .indexOf(e.key),
+                                        barRods: [
+                                          BarChartRodData(
+                                              y: e.value.toDouble(),
+                                              colors: [
+                                                Constants.secondColor,
+                                                Constants.greenAccent
+                                              ])
+                                        ],
+                                        showingTooltipIndicators: [0],
+                                      ),
+                                    )
+                                    .toList(),
+                                alignment: BarChartAlignment.spaceAround,
+                                maxY: categoryHistory.values
+                                        .reduce(max)
+                                        .toDouble() +
+                                    2), // +2 for padding on top
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 260,
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: Constants.tileColor,
+                        child: Center(
+                          child: Text("Coming soon"),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 260,
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: Constants.tileColor,
+                        child: Center(
+                          child: Text("Coming soon"),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );

@@ -32,6 +32,8 @@ class _StatsState extends State<Stats> {
             builder: (BuildContext context,
                 AsyncSnapshot<Map<String, Object>> snapshot) {
               Map<String, int> categoryHistory;
+              Map<String, int> consumptionHistory;
+
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   categoryHistory = null;
@@ -45,6 +47,11 @@ class _StatsState extends State<Stats> {
                         ? categoryHistory =
                             groupCategory(snapshot.data["consumptions"])
                         : categoryHistory = null;
+
+                    snapshot.data["consumptions"] != null
+                        ? consumptionHistory =
+                            debtEvolution(snapshot.data["consumptions"])
+                        : consumptionHistory = null;
                     break;
                   }
               }
@@ -184,9 +191,99 @@ class _StatsState extends State<Stats> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         color: Constants.tileColor,
-                        child: Center(
-                          child: Text("Coming soon"),
-                        ),
+                        child: LineChart(LineChartData(
+                          gridData: FlGridData(
+                            show: false,
+                          ),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            rightTitles: SideTitles(showTitles: false),
+                            topTitles: SideTitles(showTitles: false),
+                            bottomTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 22,
+                              interval: 1,
+                              getTextStyles: (context, value) =>
+                                  const TextStyle(
+                                      color: Color(0xff68737d),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                              getTitles: (value) {
+                                switch (value.toInt()) {
+                                  case 2:
+                                    return 'MAR';
+                                  case 5:
+                                    return 'JUN';
+                                  case 8:
+                                    return 'SEP';
+                                }
+                                return '';
+                              },
+                              margin: 8,
+                            ),
+                            leftTitles: SideTitles(
+                              showTitles: true,
+                              interval: 1,
+                              getTextStyles: (context, value) =>
+                                  const TextStyle(
+                                color: Color(0xff67727d),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                              getTitles: (value) {
+                                switch (value.toInt()) {
+                                  case 1:
+                                    return '10k';
+                                  case 3:
+                                    return '30k';
+                                  case 5:
+                                    return '50k';
+                                }
+                                return '';
+                              },
+                              reservedSize: 32,
+                              margin: 12,
+                            ),
+                          ),
+                          borderData: FlBorderData(
+                              show: true,
+                              border: Border.all(
+                                  color: const Color(0xff37434d), width: 1)),
+                          minX: 0,
+                          maxX: 11,
+                          minY: 0,
+                          maxY: 6,
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: consumptionHistory.entries
+                                  .map((e) => FlSpot(
+                                      DateTime.parse(e.key)
+                                          .millisecondsSinceEpoch
+                                          .toDouble(),
+                                      e.value.toDouble()))
+                                  .toList(),
+                              isCurved: true,
+                              colors: [
+                                Constants.secondColor,
+                                Constants.greenAccent
+                              ],
+                              barWidth: 5,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: false,
+                              ),
+                              belowBarData: BarAreaData(
+                                show: true,
+                                colors: [
+                                  Constants.secondColor,
+                                  Constants.greenAccent
+                                ]
+                                    .map((color) => color.withOpacity(0.3))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        )),
                       ),
                     ),
                     Container(

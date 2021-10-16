@@ -1,4 +1,5 @@
 import 'package:consumption/models/consumption.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
 //helper function to sort consumptions on date
@@ -42,7 +43,6 @@ Map<String, int> debtEvolution(List<Consumption> consumptions) {
   Map<String, int> map = {};
   var newFormat = DateFormat("dd-MM-yy");
 
-
   void addNew(Consumption c) {
     map[newFormat.format(c.date.toDate())] = c.price.toInt();
   }
@@ -54,7 +54,7 @@ Map<String, int> debtEvolution(List<Consumption> consumptions) {
 
   //create list
   for (Consumption c in consumptions) {
-    map.containsKey(c.name) ? update(c) : addNew(c);
+    map.containsKey(newFormat.format(c.date.toDate())) ? update(c) : addNew(c);
   }
 
   print(map);

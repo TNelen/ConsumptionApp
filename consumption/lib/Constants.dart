@@ -6,4 +6,5 @@ class Constants {
 
   static Color tileColor = Color.fromRGBO(241, 241, 241, 1);
   static Color greenAccent = Color.fromRGBO(105, 240, 173, 1);
+  static Color redAccent = Color.fromRGBO(244, 113, 116, 1);
 }

@@ -49,13 +49,28 @@ class DrinkTileState extends State<ConsumptionTile> {
                     children: [
                       Text(
                         widget.consumption.name,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w300, color:  widget.consumption.settled? Colors.grey.shade600: Colors.black),
+                        style: widget.consumption.settled
+                            ? TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade600)
+                            : TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
                       ),
                       Text(
                         widget.consumption.price.toString() + " €",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w300, color: widget.consumption.settled? Colors.grey.shade600: Colors.black, decoration: widget.consumption.settled? TextDecoration.lineThrough : null),
+                        style: widget.consumption.settled
+                            ? TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade600,
+                              )
+                            : TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
                       ),
                     ],
                   ),

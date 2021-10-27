@@ -66,6 +66,8 @@ class Popup {
               ),
               onPressed: () {
                 firestoreService.addDrink(drink);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Consumptie toegevoegd")));
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Home()),

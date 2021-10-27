@@ -118,7 +118,23 @@ class FirestoreService {
     }
   }
 
-  
+  Future<void> settleSingleDebt(Consumption consumption) async {
+    CollectionReference consumptionsRef =
+        FirebaseFirestore.instance.collection('consumptions');
 
- 
+    print("Settle singledebt called");
+    consumptionsRef.doc(consumption.id).update({"settled": true}).onError(
+        (error, stackTrace) =>
+            {print("something went wrong settling consumptions: " + error)});
+  }
+
+  Future<void> deleteConsumption(Consumption consumption) async {
+    CollectionReference consumptionsRef =
+        FirebaseFirestore.instance.collection('consumptions');
+
+    print("Settle singledebt called");
+    consumptionsRef.doc(consumption.id).delete().onError(
+        (error, stackTrace) =>
+            {print("something went wrong settling consumptions: " + error)});
+  }
 }

@@ -30,6 +30,11 @@ class _HistoryState extends State<History> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder<Map<String, Object>>(
@@ -158,8 +163,88 @@ class _HistoryState extends State<History> {
                                       Consumption consumption =
                                           consumptions[index];
 
-                                      return new ConsumptionTile(
-                                          consumption: consumption);
+                                      return new Dismissible(
+                                        key: Key(index.toString()),
+                                        background: Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding:
+                                                EdgeInsets.only(left: 20.0),
+                                            color: Constants.redAccent,
+                                            child: Row(children: [
+                                              Icon(
+                                                FontAwesomeIcons.trashAlt,
+                                                color: Colors.white,
+                                                size: 12,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "Verwijder",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ])),
+                                        secondaryBackground: consumption.settled
+                                            ? null
+                                            : Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                padding: EdgeInsets.only(
+                                                    right: 20.0),
+                                                color: Constants.greenAccent,
+                                                child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "Betaal",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Icon(
+                                                          FontAwesomeIcons
+                                                              .moneyBillAlt,
+                                                          color: Colors.white,
+                                                          size: 12),
+                                                    ])),
+                                        child: ConsumptionTile(
+                                            consumption: consumption),
+                                        onDismissed: (direction) async {
+                                          if (direction ==
+                                              DismissDirection.endToStart) {
+                                            firestoreService
+                                                .settleSingleDebt(consumption);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Consumptie vereffend")));
+                                          } else if (direction ==
+                                              DismissDirection.startToEnd) {
+                                            firestoreService
+                                                .deleteConsumption(consumption);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Consumptie verwijderd")));
+                                          }
+
+                                          setState(() {});
+                                        },
+                                      );
                                     }))
                   ],
                 ),
